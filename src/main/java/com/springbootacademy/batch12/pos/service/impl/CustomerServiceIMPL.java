@@ -3,6 +3,7 @@ package com.springbootacademy.batch12.pos.service.impl;
 import com.springbootacademy.batch12.pos.dto.CustomerDTO;
 import com.springbootacademy.batch12.pos.dto.request.CustomerUpdateDTO;
 import com.springbootacademy.batch12.pos.entity.Customer;
+import com.springbootacademy.batch12.pos.exception.NotFoundException;
 import com.springbootacademy.batch12.pos.repo.CustomerRepo;
 import com.springbootacademy.batch12.pos.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,8 @@ public class CustomerServiceIMPL implements CustomerService {
     @Override
     public List<CustomerDTO> getAllCustomers() {
         List<Customer> getAllCustomers = customerRepo.findAll();//it has 10 data
+        if(getAllCustomers.size() > 0){
+
 
         List<CustomerDTO>  customerDTOList = new ArrayList<>();
 
@@ -98,6 +101,9 @@ public class CustomerServiceIMPL implements CustomerService {
             customerDTOList.add(customerDTO);
         }
         return customerDTOList;
+        }else{
+            throw new NotFoundException("No data found");
+        }
     }
 
     @Override

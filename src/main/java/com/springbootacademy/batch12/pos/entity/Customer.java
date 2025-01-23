@@ -8,6 +8,7 @@ import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
@@ -37,8 +38,11 @@ public class Customer {
     @Column(name = "nic", length = 12)
     private String nic;
 
-    @Column(name = "active_state", columnDefinition = "TINYINT default 0")
+    @Column(name = "active_state", columnDefinition = "TINYINT default 1")
     private boolean activeState;
+
+    @OneToMany(mappedBy = "customer")
+    private Set<Order> orders;
 
     public Customer() {
     }
