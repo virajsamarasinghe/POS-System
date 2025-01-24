@@ -1,6 +1,7 @@
 package com.springbootacademy.batch12.pos.controller;
 
 
+import com.springbootacademy.batch12.pos.dto.paginated.PaginatedResponseOrderDetails;
 import com.springbootacademy.batch12.pos.dto.request.RequestOrderSaveDTO;
 import com.springbootacademy.batch12.pos.service.OrderService;
 import com.springbootacademy.batch12.pos.util.StandardResponse;
@@ -34,12 +35,18 @@ public class OrderController {
     public ResponseEntity<StandardResponse> getAllOrderDetails(
             @RequestParam("stateType") String stateType,
             @RequestParam("page") int page,
-            @RequestParam("size") @Max(50)int size
+            @RequestParam("size") @Max(50 )int size
     ){
-        System.out.println("State Type: "+stateType);
-        System.out.println("Page: "+page);
-        System.out.println("Size: "+size);
-        return new ResponseEntity<>(new StandardResponse(200, "Success", "Order details fetched successfully"), HttpStatus.OK);
-    }
-    )
+        PaginatedResponseOrderDetails p = null;
+        if(stateType.equalsIgnoreCase("active") | stateType.equalsIgnoreCase("inactive")){
+            boolean status = stateType.equalsIgnoreCase("active")?true:false;
+            p = orderService.getAllOrdersDetails(status,page,size);
+        }
+
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "Success", p),
+                HttpStatus.OK
+        );
+        }
+
 }
